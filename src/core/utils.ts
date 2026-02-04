@@ -44,16 +44,27 @@ export function parseColorValue(value: any): string {
 }
 
 /**
- * Converts RGBA color values to a hex string (ignores alpha channel).
+ * Converts RGBA color values to a hex string, including alpha channel if not fully opaque.
  * @param c RGBA color object with normalized values (0-1)
- * @returns Hex color string in uppercase format
+ * @returns Hex color string in uppercase format, with alpha if transparency < 100%
  */
 export function rgbaToHex(c: RGBA): string {
   const toHex = (v: number) => {
     const hex = Math.round(v * 255).toString(16);
     return hex.length === 1 ? "0" + hex : hex;
   };
-  return `#${toHex(c.r)}${toHex(c.g)}${toHex(c.b)}`.toUpperCase();
+  
+  const r = toHex(c.r);
+  const g = toHex(c.g);
+  const b = toHex(c.b);
+  
+  // Include alpha channel if not fully opaque
+  if (c.a !== undefined && c.a < 1) {
+    const a = toHex(c.a);
+    return `#${r}${g}${b}${a}`.toUpperCase();
+  }
+  
+  return `#${r}${g}${b}`.toUpperCase();
 }
 
 /**

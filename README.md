@@ -10,6 +10,7 @@
 * **Multi-Marques** : Gérez plusieurs marques (ex: Legacy, NewBrand) avec leurs propres modes Light et Dark.
 * **Interface Visuelle** : UI moderne pour configurer le mapping "Source → Cible" avant l'export.
 * **JSON Structuré** : Génère un fichier JSON propre, imbriqué (Nested), prêt pour l'intégration (compatible Style Dictionary).
+* **Gestion de la Transparence** : Les couleurs avec transparence incluent automatiquement le canal alpha dans leur valeur hexadécimale (format RGBA).
 * **Tri Alphabétique** : Les tokens et sous-catégories sont automatiquement triés alphabétiquement dans le JSON final.
 * **Métadonnées d'Export** : Chaque export inclut un timestamp et des informations sur la version pour traçabilité.
 * **Filtrage Intelligent** : Ignore automatiquement les variables privées (commençant par `_`, `#`).
@@ -68,7 +69,7 @@ ApertureExporter/
 │   └── core/         # Cœur logique (Indépendant de l'API Figma UI)
 │       ├── export.ts   # Construction de l'arbre JSON récursif
 │       ├── resolve.ts  # Résolution des Alias et Modes (Light/Dark)
-│       └── utils.ts    # Helpers (Conversion Hex, Nettoyage noms)
+│       └── utils.ts    # Helpers (Conversion Hex avec transparence, Nettoyage noms)
 ├── manifest.json     # Configuration du plugin Figma
 ├── package.json      # Scripts et dépendances
 └── tsconfig.json     # Configuration TypeScript
@@ -123,12 +124,24 @@ Le fichier généré inclut des métadonnées d'export et suit une structure hi�
               "path": "Colors/Border/Primary",
               "modes": {
                 "Legacy": {
-                  "light": "#E5E5E5",
-                  "dark": "#333333"
+                  "light": {
+                    "hex": "#E5E5E5",
+                    "primitiveName": "UI/Color/Neutral/200"
+                  },
+                  "dark": {
+                    "hex": "#333333",
+                    "primitiveName": "UI/Color/Neutral/800"
+                  }
                 },
                 "NewBrand": {
-                  "light": "#7B61FF",
-                  "dark": "#4801A0"
+                  "light": {
+                    "hex": "#7B61FF80",
+                    "primitiveName": "UI/Color/Brand/200"
+                  },
+                  "dark": {
+                    "hex": "#4801A0",
+                    "primitiveName": "UI/Color/Brand/700"
+                  }
                 }
               }
             }
@@ -142,7 +155,8 @@ Le fichier généré inclut des métadonnées d'export et suit une structure hi�
 
 ## Règles de Nommage
 Pour que le plugin fonctionne de manière optimale :
-- **Primitives** : Doivent contenir les valeurs Hex brutes.
+- **Primitives** : Doivent contenir les valeurs Hex brutes (avec transparence si applicable).
+- **Transparence** : Les couleurs avec transparence < 100% incluent automatiquement le canal alpha (ex: `#FF000080` pour 50% d'opacité).
 - **Tokens Sémantiques** : Doivent être des Alias pointant vers les Primitives.
 - **Exclusions** : Les variables commençant par `_` ou `#` sont automatiquement exclues de l'export.
 - **Noms Numériques** : Un token nommé `Gray/50` sera transformé en `gray-50` pour éviter les clés purement numériques.
