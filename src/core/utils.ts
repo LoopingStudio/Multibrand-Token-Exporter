@@ -1,5 +1,5 @@
 /**
- * Utility functions for the Aperture Exporter plugin
+ * Utility functions for the Multibrand Token Exporter plugin
  */
 
 /**
@@ -136,6 +136,6 @@ export function createExportMetadata(): any {
     exportedAt: new Date().toISOString(),
     timestamp: Date.now(),
     version: "1.0.0",
-    generator: "Aperture Exporter"
+    generator: "Multibrand Token Exporter"
   };
 }

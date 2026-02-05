@@ -1,9 +1,23 @@
 /**
- * Aperture Exporter - Main entry point for the Figma plugin
+ * Multibrand Token Exporter - Main entry point for the Figma plugin
  * Handles UI initialization and message routing between UI and core functionality
  */
 
 import { exportTokens } from './core/export';
+
+// Translations for notifications
+const translations: Record<string, { initError: string; exportError: string }> = {
+  fr: {
+    initError: "❌ Erreur d'initialisation : ",
+    exportError: "❌ Erreur d'export : "
+  },
+  en: {
+    initError: "❌ Initialization Error: ",
+    exportError: "❌ Export Error: "
+  }
+};
+
+let currentLang = 'en';
 
 // Clear the console for a clean start
 console.clear();
@@ -15,6 +29,7 @@ figma.showUI(__html__, { width: 600, height: 500 });
 figma.ui.onmessage = async (msg) => {
   // Handle initialization request from UI
   if (msg.type === "init") {
+    if (msg.lang) currentLang = msg.lang;
     await handleInitRequest();
   }
 
@@ -40,7 +55,8 @@ async function handleInitRequest(): Promise<void> {
     figma.ui.postMessage({ type: "init-data", collections: simplifiedCollections });
   } catch (e) {
     console.error('Error during initialization:', e);
-    figma.notify("❌ Initialization Error: " + (e instanceof Error ? e.message : String(e)));
+    const t = translations[currentLang] || translations.en;
+    figma.notify(t.initError + (e instanceof Error ? e.message : String(e)));
   }
 }
 
@@ -53,6 +69,7 @@ async function handleExportRequest(config: any): Promise<void> {
     await exportTokens(config);
   } catch (e) {
     console.error('Error during export:', e);
-    figma.notify("❌ Export Error: " + (e instanceof Error ? e.message : String(e)));
+    const t = translations[currentLang] || translations.en;
+    figma.notify(t.exportError + (e instanceof Error ? e.message : String(e)));
   }
 }

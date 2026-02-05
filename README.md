@@ -1,8 +1,8 @@
-# Aperture Exporter
+# Multibrand Token Exporter
 
-**Aperture Exporter** est un plugin Figma conçu pour automatiser l'extraction des Design Tokens. Il fait le pont entre vos **Primitives** (valeurs brutes) et vos **Tokens Sémantiques**, en gérant intelligemment les thèmes multi-marques (Light/Dark mode) grâce à une interface de mapping visuelle.
+**Multibrand Token Exporter** est un plugin Figma conçu pour automatiser l'extraction des Design Tokens. Il fait le pont entre vos **Primitives** (valeurs brutes) et vos **Tokens Sémantiques**, en gérant intelligemment les thèmes multi-marques (Light/Dark mode) grâce à une interface de mapping visuelle.
 
-![Aperture Logo](https://img.shields.io/badge/Aperture-Design_System-7B61FF) ![TypeScript](https://img.shields.io/badge/Made%20with-TypeScript-blue) ![Figma](https://img.shields.io/badge/Platform-Figma-black)
+![TypeScript](https://img.shields.io/badge/Made%20with-TypeScript-blue) ![Figma](https://img.shields.io/badge/Platform-Figma-black)
 
 ## Fonctionnalités
 
@@ -61,7 +61,7 @@ npm run watch
 Le code est séparé en plusieurs modules pour faciliter la maintenance et l'évolution.
 
 ```plaintext
-ApertureExporter/
+MultibrandTokenExporter/
 ├── dist/             # Fichier compilé (généré automatiquement)
 ├── src/
 │   ├── code.ts       # Contrôleur principal (Communication Figma <-> UI)
@@ -80,7 +80,7 @@ ApertureExporter/
 ## Utilisation
 1. Ouvrez votre fichier **Design System** dans Figma (celui contenant vos variables).
 
-1. Lancez le plugin : **Plugins > Development > Aperture Exporter**.
+1. Lancez le plugin : **Plugins > Development > Multibrand Token Exporter**.
 
 1. **Mapping Global** :
 
@@ -107,7 +107,7 @@ Le fichier généré inclut des métadonnées d'export et suit une structure hi�
     "exportedAt": "2026-01-28T14:32:45.123Z",
     "timestamp": 1737814365123,
     "version": "1.0.0",
-    "generator": "Aperture Exporter"
+    "generator": "Multibrand Token Exporter"
   },
   "tokens": [
     {
@@ -163,4 +163,4 @@ Pour que le plugin fonctionne de manière optimale :
 - **Organisation** : Les tokens et groupes sont triés alphabétiquement dans l'export final, avec les groupes placés avant les tokens individuels.
 
 ---
-**Développé avec ❤️ pour le Design System Aperture.**
+**Développé avec ❤️ pour faciliter l'export de Design Tokens multi-marques.**

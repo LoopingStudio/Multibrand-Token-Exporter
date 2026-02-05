@@ -1,6 +1,18 @@
 import { sanitizeName, insertTokenIntoTree, toKebabCase, sanitizeFolderName, sortTokensAlphabetically, createExportMetadata } from './utils';
 import { resolveBrandColors } from './resolve';
 
+// Translations for notifications
+const translations: Record<string, { analyzing: string; exportFinished: string }> = {
+  fr: {
+    analyzing: "⏳ Analyse en cours...",
+    exportFinished: "✅ Export terminé !"
+  },
+  en: {
+    analyzing: "⏳ Analysing...",
+    exportFinished: "✅ Export finished!"
+  }
+};
+
 /**
  * Export configuration interface
  */
@@ -12,6 +24,7 @@ export interface ExportConfig {
     light?: { modeId: string; primitiveModeId: string };
     dark?: { modeId: string; primitiveModeId: string };
   }>;
+  lang?: string;
 }
 
 /**
@@ -30,28 +43,31 @@ export interface TokenObject {
  * @param config Configuration object containing collection IDs and brand definitions
  */
 export async function exportTokens(config: ExportConfig): Promise<void> {
-  figma.notify("⏳ Analysing..."); // Notify user that analysis has started
+  const lang = config.lang || 'en';
+  const t = translations[lang] || translations.en;
+
+  figma.notify(t.analyzing); // Notify user that analysis has started
 
   const { tokenCollectionId, primitiveCollectionId, brands } = config;
-  
+
   // Validate and retrieve collections
   const { variables } = await validateAndGetCollections(tokenCollectionId, primitiveCollectionId);
-  
+
   // Process variables and build token structure
   const rootArray = await processVariables(variables, brands);
-  
+
   // Sort tokens and categories alphabetically
   const sortedTokens = sortTokensAlphabetically(rootArray);
-  
+
   // Create final export structure with metadata
   const exportData = {
     metadata: createExportMetadata(),
     tokens: sortedTokens
   };
-  
+
   // Send the exported data to the UI for download
   figma.ui.postMessage({ type: "download-json", data: exportData });
-  figma.notify("✅ Export finished !");
+  figma.notify(t.exportFinished);
 }
 
 /**

@@ -1,6 +1,6 @@
 {
-  "name": "Aperture Exporter",
-  "id": "1597696452109142406",
+  "name": "Multibrand Token Exporter",
+  "id": "1601261816129528282",
   "api": "1.0.0",
   "main": "dist/code.js",
   "ui": "src/ui.html",

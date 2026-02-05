@@ -1,7 +1,7 @@
 {
-  "name": "aperture-exporter",
+  "name": "multibrand-token-exporter",
   "version": "1.0.0",
-  "description": "Export Figma tokens to JSON",
+  "description": "Export Figma design tokens with multi-brand support to JSON",
   "main": "dist/code.js",
   "scripts": {
     "build": "esbuild src/code.ts --bundle --outfile=dist/code.js --target=es6 --minify",
